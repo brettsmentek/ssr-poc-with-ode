@@ -1,15 +1,22 @@
-import App from './App/App'
+import Home from './Home'
+import Home2 from './Home2'
+import NotFound from './NotFound'
 
-const routes = [
+// import loadData from './helpers/loadData'
+
+const Routes = [
   {
     path: '/',
     exact: true,
-    component: App,
+    component: Home,
   },
   {
     path: '/2',
-    component: App,
+    component: Home2,
+  },
+  {
+    component: NotFound,
   },
 ]
 
-export default routes
+export default Routes

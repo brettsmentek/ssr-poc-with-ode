@@ -1,15 +1,22 @@
 import React from 'react'
-import Route from 'react-router-dom/Route'
-import Switch from 'react-router-dom/Switch'
-import Home from '../Home'
-import Home2 from '../Home2'
+import { Switch, NavLink } from 'react-router-dom'
+import { renderRoutes } from 'react-router-config'
+
+import Routes from '../routes'
 import './App.css'
 
-const App = () => (
-  <Switch>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/2" component={Home2} />
-  </Switch>
+const App = props => (
+  <>
+    <ul>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/2">Home2</NavLink>
+      </li>
+    </ul>
+    <Switch>{renderRoutes(Routes)}</Switch>
+  </>
 )
 
 export default App
