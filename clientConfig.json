@@ -1,0 +1,212 @@
+{
+  "mode": "development",
+  "context": "/Users/brett.smentek/repo/ssr-poc-with-ode",
+  "target": "web",
+  "devtool": "cheap-module-source-map",
+  "resolve": {
+    "modules": [
+      "node_modules"
+    ],
+    "extensions": [
+      ".jsx",
+      ".js",
+      ".json"
+    ],
+    "alias": {
+      "webpack/hot/poll": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/webpack/hot/poll.js",
+      "react-dom": "@hot-loader/react-dom"
+    }
+  },
+  "resolveLoader": {
+    "modules": [
+      "node_modules"
+    ]
+  },
+  "module": {
+    "strictExportPresence": true,
+    "rules": [
+      {
+        "test": {},
+        "include": [
+          "/Users/brett.smentek/repo/ssr-poc-with-ode/src"
+        ],
+        "exclude": {},
+        "use": [
+          {
+            "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/babel-loader/lib/index.js",
+            "options": {
+              "babelrc": false,
+              "presets": [
+                "@babel/preset-react",
+                [
+                  "@babel/preset-env",
+                  {
+                    "modules": false,
+                    "targets": {
+                      "browsers": [
+                        "and_chr >= 60",
+                        "and_ff >= 60",
+                        "chrome >= 60",
+                        "firefox >= 60",
+                        "ios_saf >= 11.3",
+                        "safari >= 12",
+                        "samsung >= 8.2",
+                        "opera >= 55"
+                      ]
+                    }
+                  }
+                ]
+              ],
+              "plugins": [
+                [
+                  "styled-components",
+                  {
+                    "ssr": true,
+                    "displayName": true,
+                    "fileName": false
+                  }
+                ],
+                "@babel/plugin-syntax-dynamic-import",
+                "react-hot-loader/babel",
+                "react-loadable/babel",
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    "helpers": true,
+                    "corejs": false,
+                    "useESModules": true,
+                    "regenerator": false
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "exclude": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ],
+        "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/file-loader/dist/cjs.js",
+        "options": {
+          "name": "static/media/[name].[hash:8].[ext]",
+          "emitFile": true
+        }
+      },
+      {
+        "test": [
+          {},
+          {},
+          {},
+          {}
+        ],
+        "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/url-loader/dist/cjs.js",
+        "options": {
+          "limit": 10000,
+          "name": "static/media/[name].[hash:8].[ext]",
+          "emitFile": true
+        }
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "filename": "./dist/react-loadable.json"
+    },
+    {
+      "options": {
+        "filename": "assets.json",
+        "prettyPrint": false,
+        "update": false,
+        "fullPath": true,
+        "manifestFirst": true,
+        "useCompilerPath": false,
+        "fileTypes": [
+          "js",
+          "css"
+        ],
+        "includeAllFileTypes": true,
+        "keepInMemory": false,
+        "integrity": false,
+        "path": "/Users/brett.smentek/repo/ssr-poc-with-ode/dist"
+      }
+    },
+    {
+      "options": {
+        "multiStep": true
+      },
+      "multiStep": true,
+      "fullBuildTimeout": 200,
+      "requestTimeout": 10000
+    },
+    {
+      "profile": false,
+      "modulesCount": 500,
+      "showEntries": false,
+      "showModules": true,
+      "showActiveModules": true,
+      "options": {
+        "name": "client",
+        "color": "#f56be2",
+        "reporters": [
+          "fancy"
+        ],
+        "reporter": null
+      },
+      "reporters": [
+        {}
+      ]
+    }
+  ],
+  "entry": {
+    "client": [
+      "react-hot-loader/patch",
+      "/Users/brett.smentek/repo/ssr-poc-with-ode/src/main.js"
+    ]
+  },
+  "output": {
+    "path": "/Users/brett.smentek/repo/ssr-poc-with-ode/dist/public",
+    "publicPath": "http://0.0.0.0:8080/",
+    "pathinfo": true,
+    "filename": "static/js/bundle.js",
+    "chunkFilename": "static/js/[name].chunk.js",
+    "library": [
+      "MAIN"
+    ],
+    "libraryExport": "default"
+  },
+  "devServer": {
+    "serverSideRender": true,
+    "disableHostCheck": true,
+    "clientLogLevel": "none",
+    "compress": true,
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    },
+    "historyApiFallback": {
+      "disableDotRule": true
+    },
+    "host": "0.0.0.0",
+    "hot": true,
+    "noInfo": true,
+    "overlay": false,
+    "port": "8080",
+    "quiet": true
+  },
+  "optimization": {
+    "splitChunks": {
+      "chunks": "all",
+      "cacheGroups": {
+        "default": false,
+        "vendors": false
+      }
+    }
+  }
+}

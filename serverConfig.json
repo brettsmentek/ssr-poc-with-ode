@@ -1,0 +1,183 @@
+{
+  "mode": "development",
+  "context": "/Users/brett.smentek/repo/ssr-poc-with-ode",
+  "target": "node",
+  "devtool": "cheap-module-source-map",
+  "resolve": {
+    "modules": [
+      "node_modules"
+    ],
+    "extensions": [
+      ".jsx",
+      ".js",
+      ".json"
+    ],
+    "alias": {
+      "webpack/hot/poll": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/webpack/hot/poll.js",
+      "react-dom": "@hot-loader/react-dom"
+    }
+  },
+  "resolveLoader": {
+    "modules": [
+      "node_modules"
+    ]
+  },
+  "module": {
+    "strictExportPresence": true,
+    "rules": [
+      {
+        "test": {},
+        "include": [
+          "/Users/brett.smentek/repo/ssr-poc-with-ode/src"
+        ],
+        "exclude": {},
+        "use": [
+          {
+            "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/babel-loader/lib/index.js",
+            "options": {
+              "babelrc": false,
+              "presets": [
+                "@babel/preset-react",
+                [
+                  "@babel/preset-env",
+                  {
+                    "modules": "commonjs",
+                    "targets": {
+                      "node": "10.15"
+                    }
+                  }
+                ]
+              ],
+              "plugins": [
+                [
+                  "styled-components",
+                  {
+                    "ssr": true,
+                    "displayName": true,
+                    "fileName": false
+                  }
+                ],
+                "@babel/plugin-syntax-dynamic-import",
+                "react-hot-loader/babel",
+                "react-loadable/babel",
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    "helpers": true,
+                    "corejs": false,
+                    "useESModules": false,
+                    "regenerator": false
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "exclude": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ],
+        "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/file-loader/dist/cjs.js",
+        "options": {
+          "name": "static/media/[name].[hash:8].[ext]",
+          "emitFile": true
+        }
+      },
+      {
+        "test": [
+          {},
+          {},
+          {},
+          {}
+        ],
+        "loader": "/Users/brett.smentek/repo/ssr-poc-with-ode/node_modules/url-loader/dist/cjs.js",
+        "options": {
+          "limit": 10000,
+          "name": "static/media/[name].[hash:8].[ext]",
+          "emitFile": true
+        }
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "keys": [
+        "NODE_ENV"
+      ],
+      "defaultValues": {}
+    },
+    {
+      "options": {
+        "maxChunks": 1
+      }
+    },
+    {
+      "options": {},
+      "fullBuildTimeout": 200,
+      "requestTimeout": 10000
+    },
+    {
+      "options": {
+        "signal": false,
+        "keyboard": true,
+        "name": "server.js",
+        "nodeArgs": [
+          "-r",
+          "source-map-support/register"
+        ]
+      },
+      "worker": null
+    },
+    {
+      "paths": [
+        "/Users/brett.smentek/repo/ssr-poc-with-ode/dist/assets.json"
+      ]
+    },
+    {
+      "profile": false,
+      "modulesCount": 500,
+      "showEntries": false,
+      "showModules": true,
+      "showActiveModules": true,
+      "options": {
+        "name": "server",
+        "color": "#c065f4",
+        "reporters": [
+          "fancy"
+        ],
+        "reporter": null
+      },
+      "reporters": [
+        {}
+      ]
+    }
+  ],
+  "node": {
+    "__console": false,
+    "__dirname": false,
+    "__filename": false
+  },
+  "externals": [
+    null
+  ],
+  "output": {
+    "path": "/Users/brett.smentek/repo/ssr-poc-with-ode/dist",
+    "publicPath": "http://0.0.0.0:8080/",
+    "filename": "server.js",
+    "libraryTarget": "commonjs2"
+  },
+  "entry": [
+    "razzle-dev-utils/prettyNodeErrors",
+    "webpack/hot/poll?300",
+    "/Users/brett.smentek/repo/ssr-poc-with-ode/src/server/index.js"
+  ],
+  "watch": true
+}
