@@ -58,7 +58,6 @@
                   }
                 ],
                 "@babel/plugin-syntax-dynamic-import",
-                "react-hot-loader/babel",
                 "react-loadable/babel",
                 [
                   "@babel/plugin-transform-runtime",

@@ -1,33 +1,30 @@
-import http from 'http'
+import express from 'express'
+import Loadable from 'react-loadable'
 
-// disable "app" is read-only"
-let { default: app } = require(`./server`)
-
-const server = http.createServer(app)
-
-let currentApp = app
-
-server.listen(process.env.PORT || 3000, error => {
-  if (error) {
-    console.log(error)
-  }
-
-  console.log(`🚀 started`)
-})
+let app = require('./server').default
 
 if (module.hot) {
-  console.log(`✅  Server-side HMR Enabled!`)
-
-  module.hot.accept(`./server`, () => {
-    console.log(`🔁  HMR Reloading \`./server\`...`)
-
+  module.hot.accept('./server', function() {
+    console.log('🔁  HMR Reloading `./server`...')
     try {
-      ;({ default: app } = require(`./server`))
-      server.removeListener(`request`, currentApp)
-      server.on(`request`, app)
-      currentApp = app
+      app = require('./server').default
     } catch (error) {
       console.error(error)
     }
   })
+  console.info('✅  Server-side HMR Enabled!')
 }
+
+const port = process.env.PORT || 3000
+
+export default Loadable.preloadAll().then(() =>
+  express()
+    .use((req, res) => app.handle(req, res))
+    .listen(port, function(err) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      console.log(`> Started on port ${port}`)
+    })
+)

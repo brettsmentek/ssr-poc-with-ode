@@ -8,7 +8,7 @@ import { StaticRouter } from 'react-router-dom'
 import { matchRoutes } from 'react-router-config'
 import { getBundles } from 'react-loadable/webpack'
 import Routes from '../routes'
-import App from '../App/App'
+import App from '../App'
 
 const server = express()
 
@@ -18,7 +18,7 @@ server
   .get(`/*`, async (req, res) => {
     const matchingRoutes = matchRoutes(Routes, req.url)
     const assets = require(`../../dist/assets.json`)
-    const loadableStats = require(`../../dist/react-loadable.json`)
+    const stats = require(`../../dist/react-loadable.json`)
     const sheet = new ServerStyleSheet()
     const modules = []
 
@@ -34,8 +34,6 @@ server
 
     const context = { data }
 
-    await Loadable.preloadAll()
-
     const markup = renderToString(
       <Loadable.Capture report={moduleName => modules.push(moduleName)}>
         <StaticRouter context={context} location={req.url}>
@@ -46,77 +44,58 @@ server
       </Loadable.Capture>
     )
 
-    console.log('modules', modules)
-
-    const bundles = getBundles(loadableStats, modules)
-
-    const chunks = bundles
-      .filter(({ file }) => !file.endsWith(`.map`))
-      .map(({ file }) => {
-        const chunkName = path.basename(file).replace(/\..*$/, ``)
-
-        if (chunkName === `bundle`) {
-          return ``
-        }
-
-        return assets[chunkName].js
-      })
-    const jsFiles = [assets.client.js, ...chunks]
-
-    const js = jsFiles
-      .filter(path => path.endsWith(`.js`))
-      .map(path => `<script onload="window.LOAD()" src="${path}"></script>`)
-
-    const loader = `
-      <script>
-        let scripts = ${js.length};
-        window.LOAD = function() {
-          scripts --;
-
-          if (scripts === 0) {
-            window.MAIN();
-          }
-        }
-      </script>`
-
-    js.unshift(loader)
-
-    const html = `
-      <!doctype html>
-      <html lang="">
-        <head>
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-              <meta charset="utf-8" />
-              <title>Welcome to Razzle</title>
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-          </head>
-          <body>
-            <div id="app">${markup}</div>
-            ${js.join(`\n`)}
-          </body>
-        </html>
-    `
+    console.log(modules)
 
     if (context.url) {
       res.redirect(context.url)
-    }
-    if (context.status === 404) {
-      res.status(404).send(html)
     } else {
-      res.status(200).send(html)
+      const bundles = getBundles(stats, modules)
+      const chunks = bundles
+        .filter(bundle => bundle.file.endsWith('.js'))
+        .filter(bundle => !bundle.file.includes(`bundle`))
+
+      console.log(chunks)
+      const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
+
+      res.status(200).send(
+        `
+        <!doctype html>
+        <html lang="">
+          <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta charSet='utf-8' />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            ${
+              assets.client.css
+                ? `<link rel="stylesheet" href="${assets.client.css}">`
+                : ''
+            }
+            ${styles
+              .map(style => {
+                return `<link href="${style.file}" rel="stylesheet"/>`
+              })
+              .join('\n')}
+          </head>
+          <body>
+            <div id="root">${markup}</div>
+            ${
+              process.env.NODE_ENV === 'production'
+                ? `<script src="${assets.client.js}"></script>`
+                : `<script src="${assets.client.js}" crossorigin></script>`
+            }
+            ${chunks
+              .map(chunk =>
+                process.env.NODE_ENV === 'production'
+                  ? `<script src="${chunk.publicPath}"></script>`
+                  : `<script src="${chunk.publicPath}"></script>`
+              )
+              .join('\n')}
+            <script>window.main();</script>
+          </body>
+        </html>
+        `
+      )
     }
   })
 
 export default server
-
-// .get('/*', async (req, res) => {
-//   try {
-//     const html = await render({
-//       req,
-//       routes,
-//     })
-//     res.send(html)
-//   } catch (error) {
-//     res.json(error)
-//   }
-// })

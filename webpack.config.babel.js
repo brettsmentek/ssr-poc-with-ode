@@ -141,7 +141,6 @@ module.exports = (target = `web`) => {
                     },
                   ],
                   `@babel/plugin-syntax-dynamic-import`,
-                  `react-hot-loader/babel`,
                   `react-loadable/babel`,
                   [
                     `@babel/plugin-transform-runtime`,
@@ -291,7 +290,7 @@ module.exports = (target = `web`) => {
       // specify our client entry point /client/index.js
       config.entry = {
         client: [
-          `react-hot-loader/patch`,
+          require.resolve('razzle-dev-utils/webpackHotDevClient'),
           paths.appClientIndexJs,
           `./src/hot/onDemandClient.js`,
         ],

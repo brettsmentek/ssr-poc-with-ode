@@ -67,7 +67,6 @@
                   }
                 ],
                 "@babel/plugin-syntax-dynamic-import",
-                "react-hot-loader/babel",
                 "react-loadable/babel",
                 [
                   "@babel/plugin-transform-runtime",
@@ -167,7 +166,6 @@
   ],
   "entry": {
     "client": [
-      "react-hot-loader/patch",
       "/Users/brett.smentek/repo/ssr-poc-with-ode/src/main.js"
     ]
   },

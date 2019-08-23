@@ -1,11 +1,15 @@
 import React from 'react'
-import { Switch, NavLink } from 'react-router-dom'
+// import { hot } from 'react-hot-loader/root'
+// import { setConfig } from 'react-hot-loader'
+import { NavLink } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 
-import Routes from '../routes'
+import Routes from './routes'
 import './App.css'
 
-const App = props => (
+// setConfig({ logLevel: 'debug' })
+
+const App = () => (
   <>
     <ul>
       <li>
@@ -15,7 +19,7 @@ const App = props => (
         <NavLink to="/2">Home2</NavLink>
       </li>
     </ul>
-    <Switch>{renderRoutes(Routes)}</Switch>
+    {renderRoutes(Routes)}
   </>
 )
 
