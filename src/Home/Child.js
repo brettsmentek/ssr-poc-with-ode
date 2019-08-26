@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const H2 = styled.h2`
@@ -6,4 +6,24 @@ const H2 = styled.h2`
   max-width: 100vw;
 `
 
-export default () => <H2>Stuff Child</H2>
+class Child extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = { count: 0 }
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({
+        count: this.state.count + 1,
+      })
+    }, 1000)
+  }
+
+  render() {
+    return <H2>{this.state.count}</H2>
+  }
+}
+
+export default Child

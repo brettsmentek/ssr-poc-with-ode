@@ -1,13 +1,12 @@
 import React from 'react'
-// import { hot } from 'react-hot-loader/root'
-// import { setConfig } from 'react-hot-loader'
+import { hot } from 'react-hot-loader/root' // import { setConfig } from 'react-hot-loader'// import { setConfig } from 'react-hot-loader'
+import { setConfig } from 'react-hot-loader'
 import { NavLink } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
-
 import Routes from './routes'
 import './App.css'
 
-// setConfig({ logLevel: 'debug' })
+setConfig({ logLevel: 'debug' })
 
 const App = () => (
   <>
@@ -23,4 +22,4 @@ const App = () => (
   </>
 )
 
-export default App
+export default hot(App)
