@@ -6,7 +6,7 @@ import App from './App'
 
 const root = document.getElementById('root')
 
-window.main = () => {
+export default () => {
   render(App)
 }
 

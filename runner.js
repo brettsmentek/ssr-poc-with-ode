@@ -1,4 +1,3 @@
-import path from 'path'
 import webpack from 'webpack'
 import DevServer from 'webpack-dev-server'
 import createConfig from './webpack.config.babel'
@@ -6,21 +5,14 @@ import createConfig from './webpack.config.babel'
 const { NODE_ENV = `development` } = process.env
 const clientConfig = createConfig(`web`)
 
-// see ./clientConfig.json
-
 const serverConfig = createConfig(`node`)
-
-// see ./serverConfig.json
 
 // Compile our assets with webpack, compiler instances
 const clientCompiler = webpack(clientConfig)
 const serverCompiler = webpack(serverConfig)
 
-let serverStats
-
 if (NODE_ENV === `development`) {
   const { devServer: serverOptions } = clientConfig
-  const routeRe = /^\/.*\.html$/
 
   // Create a new instance of Webpack-dev-server for our client assets.
   // This will actually run on a different port than the users app. (8080)

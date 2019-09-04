@@ -11,6 +11,12 @@ const errorOverlayMiddleware = require(`react-dev-utils/errorOverlayMiddleware`)
 const WebpackBar = require(`webpackbar`)
 const { sync: findUp } = require(`find-up`)
 const { ReactLoadablePlugin } = require(`react-loadable/webpack`)
+const DashboardPlugin = require('webpack-dashboard/plugin')
+
+const DynamicEntry = () =>
+  new Promise(resolve => {
+    resolve(['./src/main.js'])
+  })
 
 // This is the Webpack configuration factory. It's the juice!
 module.exports = (target = `web`) => {
@@ -288,12 +294,8 @@ module.exports = (target = `web`) => {
     if (IS_DEV) {
       // Setup Webpack Dev Server on port 3001 and
       // specify our client entry point /client/index.js
-      config.entry = {
-        client: [
-          require.resolve('razzle-dev-utils/webpackHotDevClient'),
-          paths.appClientIndexJs,
-          `./src/hot/onDemandClient.js`,
-        ],
+      config.entry = () => {
+        return DynamicEntry()
       }
 
       // Configure our client bundles output. Not the public path is to 3001.
@@ -345,6 +347,7 @@ module.exports = (target = `web`) => {
       // Add client-only development plugins
       config.plugins = [
         ...config.plugins,
+        new DashboardPlugin(),
         new webpack.HotModuleReplacementPlugin({
           multiStep: true,
         }),
