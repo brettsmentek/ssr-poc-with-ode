@@ -18,6 +18,32 @@ server
   .use(express.static(`dist`))
   .get(`/*`, async (req, res) => {
     let matchingRoutes = matchRoutes(Routes, req.url)
+
+    console.log(matchingRoutes)
+    if (!matchingRoutes.length) {
+      const pinger = renderToString(<App route={null} />)
+
+      res.status(200).send(`
+      <!doctype html>
+        <html lang="">
+          <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta charSet='utf-8' />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+          </head>
+          <body>
+            <div id="root">${pinger}</div>
+            <script>
+             const url = 'http://localhost:8080/on-demand-entries-ping?page=/'
+             fetch(url)
+            </script>
+          </body>
+        </html>
+      `)
+
+      return
+    }
+
     const assets = require(`../../dist/assets.json`)
     const stats = require(`../../dist/react-loadable.json`)
     const sheet = new ServerStyleSheet()
@@ -26,7 +52,6 @@ server
     let promises = []
 
     if (matchingRoutes.length) {
-      console.log('writing prevRoutes', matchingRoutes)
       prevRoutes = matchingRoutes
     }
 

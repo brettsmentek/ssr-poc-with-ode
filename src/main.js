@@ -13,7 +13,6 @@ export default () => {
 if (module.hot) {
   module.hot.accept(`./App`, () => {
     const NewApp = require(`./App`).default
-
     render(NewApp)
   })
 }
@@ -28,3 +27,4 @@ function render(Root) {
     )
   })
 }
+// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make// hack to force make

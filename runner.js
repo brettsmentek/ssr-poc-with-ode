@@ -1,6 +1,7 @@
 import webpack from 'webpack'
 import DevServer from 'webpack-dev-server'
 import createConfig from './webpack.config.babel'
+const CustomWebpackPlugin = require('./customWebpackPlugin')
 
 const { NODE_ENV = `development` } = process.env
 const clientConfig = createConfig(`web`)
@@ -13,6 +14,16 @@ const serverCompiler = webpack(serverConfig)
 
 if (NODE_ENV === `development`) {
   const { devServer: serverOptions } = clientConfig
+
+  const customWebpackPlugin = new CustomWebpackPlugin()
+
+  // use webpack-dev-server middleware
+  serverOptions.setup = function(app) {
+    app.use(customWebpackPlugin.middleware(clientCompiler))
+  }
+
+  // pass the compiler
+  customWebpackPlugin.apply(clientCompiler)
 
   // Create a new instance of Webpack-dev-server for our client assets.
   // This will actually run on a different port than the users app. (8080)

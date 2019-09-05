@@ -13,10 +13,11 @@ const { sync: findUp } = require(`find-up`)
 const { ReactLoadablePlugin } = require(`react-loadable/webpack`)
 const DashboardPlugin = require('webpack-dashboard/plugin')
 
-const DynamicEntry = () =>
-  new Promise(resolve => {
-    resolve(['./src/main.js'])
+const DynamicEntry = input => {
+  return new Promise(resolve => {
+    resolve({ main: './src/main.js' })
   })
+}
 
 // This is the Webpack configuration factory. It's the juice!
 module.exports = (target = `web`) => {
